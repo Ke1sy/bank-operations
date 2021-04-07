@@ -1,0 +1,15 @@
+{
+  "name": "bank-operations",
+  "version": "1.0.0",
+  "description": "bank operations test app",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "fs": "0.0.1-security",
+    "moment": "^2.29.1"
+  }
+}
