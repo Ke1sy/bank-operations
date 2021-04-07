@@ -31,17 +31,18 @@ const USER_TYPES = {
 };
 
 if (inputFile) {
-  init();
+  initBankOperations(inputFile);
 } else {
   console.error('Input file not selected')
 }
 
-async function init() {
-  const fileData = await getData(inputFile);
+async function initBankOperations(file) {
+  const fileData = await getData(file);
+  const commissionsResult = [];
+
   if (fileData) {
     const formattedData = fileData.map(obj => ({...obj, year: moment(obj.date).format('YYYY'), week: moment(obj.date, "YYYY-MM-DD").isoWeek()}));
     const usersObj = {};
-    const commissionsResult = [];
 
     formattedData.forEach(obj => {
       const {user_id, week, type, operation: {amount}, user_type, year} = obj;
@@ -90,9 +91,11 @@ async function init() {
       usersObj[user_id][year][week]['cashOutTotal'] += amount;
 
     });
-
-    commissionsResult.forEach(c => console.log(c))
   }
+
+  commissionsResult.forEach(c => console.log(c));
+
+  return commissionsResult;
 }
 
 const calculateCommission = (amount, percent, minValue = null, maxValue = null) => {
@@ -105,7 +108,6 @@ const calculateCommission = (amount, percent, minValue = null, maxValue = null) 
   return (Math.ceil(commission * 100) / 100).toFixed(2);
 };
 
-
 async function getData(file) {
   try {
     const data = await fs.readFile(file);
@@ -115,3 +117,5 @@ async function getData(file) {
     return null;
   }
 }
+
+module.exports = initBankOperations;
